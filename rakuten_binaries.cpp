@@ -29,15 +29,13 @@
 int pow2const[] = {1,2,4,8,16,32,64,128,256,512,1024};
 
 long int bin(std::vector<int> &a) {
-    return 0;
-    
-//    long int s = 0;
-//    for (int i=0; i<a.size(); i++) { // (don't look here, I'm lazy...)
-//        long int t = 1, k = a[i];
-//        for(int j=0; j<k; j++) t*= 2;
-//        s += t;
-//    }
-//    return s;
+    long int s = 0;
+    for (int i=0; i<a.size(); i++) { // (don't look here, I'm lazy...)
+        long int t = 1, k = a[i];
+        for(int j=0; j<k; j++) t*= 2;
+        s += t;
+    }
+    return s;
 }
 
 long int pow2(long int n) {
@@ -230,7 +228,7 @@ std::vector<int> solution3(std::vector<int> &a) {
 int main() {
     int n = 100000;
     std::vector<int> a(n);
-    clock_t t;
+    double t;
 
     srand((unsigned int)time(NULL));
     for (int i=0; i<n; i++) {
@@ -243,17 +241,17 @@ int main() {
     t = clock();
     b1 = solution1(a);
     t = clock() - t;
-    std::cout << "s1 time: " << t << std::endl;
+    std::cout << "s1 time: " << t/CLOCKS_PER_SEC << std::endl;
     
     t = clock();
     b2 = solution2(a);
     t = clock() - t;
-    std::cout << "s2 time: " << t << std::endl;
+    std::cout << "s2 time: " << t/CLOCKS_PER_SEC << std::endl;
     
     t = clock();
     b3 = solution3(a);
     t = clock() - t;
-    std::cout << "s3 time: " << t << std::endl;
+    std::cout << "s3 time: " << t/CLOCKS_PER_SEC << std::endl;
 
     std::cout << "s1: " << b1.size() << std::endl;
     std::cout << "s2: " << b2.size() << std::endl;
