@@ -216,6 +216,7 @@ std::vector<int> solution3(std::vector<int> &a) {
 int main() {
     int n = 100000;
     std::vector<int> a(n);
+    clock_t t;
 
     srand((unsigned int)time(NULL));
     for (int i=0; i<n; i++) {
@@ -224,9 +225,22 @@ int main() {
     long int bina = bin(a);
     std::cout << "bin(a) = " << bina << std::endl;
     std::vector<int> b1, b2, b3;
+    
+    t = clock();
     b1 = solution1(a);
+    t = clock() - t;
+    std::cout << "s1 time: " << t << std::endl;
+    
+    t = clock();
     b2 = solution2(a);
+    t = clock() - t;
+    std::cout << "s2 time: " << t << std::endl;
+    
+    t = clock();
     b3 = solution3(a);
+    t = clock() - t;
+    std::cout << "s3 time: " << t << std::endl;
+
     std::cout << "s1: " << b1.size() << std::endl;
     std::cout << "s2: " << b2.size() << std::endl;
     std::cout << "s3: " << b3.size() << std::endl;
@@ -247,11 +261,14 @@ int main() {
 /* 
 std::cout:
 ```
-iterations: 4, operations count: 600000
-iterations: 17, operations count: 103317
+iterations: 13, operations count: 31196
+s1 time: 23577
+iterations: 17, operations count: 102447
+s2 time: 46898
 iterations: 7, operations count: 699993
-s1: 5014
-s2: 5014
-s3: 5014
+s3 time: 11973
+s1: 4931
+s2: 4931
+s3: 4931
 ```
 */
