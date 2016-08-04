@@ -17,7 +17,6 @@
  
 #include <map>
 #include <vector>
-#include <algorithm>
 #include <iostream>
 
 int solution(std::vector<int> &a) {
@@ -69,22 +68,40 @@ int solution(std::vector<int> &a) {
 
     } while(has_changed);
     
+    std::cout << "answer: [ ";
+    for(it = uniq.begin(); it != uniq.end(); it++){
+        std::cout << it->first << " ";
+    }
+    std::cout << "]" << std::endl;
+
     return (int)uniq.size();
 }
 
 int main() {
     std::vector<int> a(8);
     
-    a[0]=0;
-    a[1]=0;
-    a[2]=2;
-    a[3]=0;
+    a[0]=8;
+    a[1]=8;
+    a[2]=4;
+    a[3]=4;
     a[4]=2;
-    a[5]=4;
-    a[6]=0;
+    a[5]=2;
+    a[6]=1;
     a[7]=1;
-    // binarie (a) = 30
+    
+    // finding a binarie
+    long int s = 0;
+    for (int i=0; i<a.size(); i++) { // (don't look here, I'm lazy...)
+        long int t = 1, k = a[i];
+        for(int j=0; j<k; j++) t*= 2;
+        s += t;
+    }
+    
+    std::cout << "bin(a) = " << s << std::endl;
+    
     int r = solution(a);
-    // answer is 4, b = [1,2,3,4], cuz 30 = 11110b
+    
+    std::cout << r << std::endl;
+    
     return 0;
 }
