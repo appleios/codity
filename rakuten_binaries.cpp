@@ -12,7 +12,7 @@
  * example: a = [0,0,1,2,0,3,0,1]
  * binarie(a) = 2^0 + 2^0 + 2^1 + 2^2 + 2^0 + 2^3 + 2^0 + 2^1 = 1 + 1 + 2 + 4 + 1 + 8 + 1 + 2 = 20
  * b = [4,2], because binarie(b) = 2^4 + 2^2 = 16 + 4 = 20
- * and there is no sorter answer (following out of shortes binary representation of number 20 = 1100).
+ * and there is no shorter answer (following out of shortes binary representation of number 20 = 1100).
  */
  
 #include <map>
