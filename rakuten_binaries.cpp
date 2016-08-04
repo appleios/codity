@@ -22,9 +22,11 @@
 
 int solution(std::vector<int> &a) {
     std::map<int, int> uniq;
+    std::map<int, int>::iterator it;
+
     for(int i=0; i<a.size(); i++) {
         int t = a[i];
-        std::map<int, int>::iterator it = uniq.find(t);
+        it = uniq.find(t);
         if(it != uniq.end()) {
             it->second++;
         } else {
@@ -32,12 +34,10 @@ int solution(std::vector<int> &a) {
         }
     }
     
-    bool has_changed = false;
+    bool has_changed;
     do {
-        
         has_changed = false;
         
-        std::map<int, int>::iterator it;
         std::vector<int> must_delete, to_inc;
         for(it = uniq.begin(); it != uniq.end(); it++){
             int key = it->first, value = it->second;
@@ -50,26 +50,26 @@ int solution(std::vector<int> &a) {
         
         for(int i=0; i<to_inc.size(); i++){
             int z = to_inc[i];
-            std::map<int, int>::iterator it3 = uniq.find(z);
-            if(it3 != uniq.end()) {
-                it3->second += 1;
+            it = uniq.find(z);
+            if(it != uniq.end()) {
+                it->second += 1;
             } else {
                 uniq[z] = 1;
             }
         }
 
         for(it = uniq.begin(); it != uniq.end(); it++){
-            if(it->second == 0) { // delete the key
+            if(it->second == 0) { // mark key for deletion
                 must_delete.push_back(it->first);
             }
         }
         for(int i=0; i<must_delete.size(); i++){
             uniq.erase(must_delete[i]);
         }
-        
+
     } while(has_changed);
     
-    return uniq.size();
+    return (int)uniq.size();
 }
 
 int main() {
