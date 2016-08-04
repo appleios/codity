@@ -105,3 +105,12 @@ int main() {
     
     return 0;
 }
+
+/* 
+std::cout:
+```
+bin(a) = 556
+b: [ 2 3 5 9 ]
+answer: 4
+```
+*/
