@@ -20,10 +20,13 @@
 #include <vector>
 #include <iostream>
 #include <map>
+#include <set>
 
 #include <stdlib.h>
 
 #define MAXAI 100000*3/2
+
+int pow2const[] = {1,2,4,8,16,32,64,128,256,512,1024};
 
 long int bin(std::vector<int> &a) {
     return 0;
@@ -38,11 +41,22 @@ long int bin(std::vector<int> &a) {
 }
 
 long int pow2(long int n) {
-    int r = 1;
-    for (int i=0; i<n; i++) {
-        r *= 2;
+    if(n<=10) {
+        return pow2const[n];
     }
-    return r;
+    
+    int result = 1;
+    int a = 2;
+    
+    while (n){
+        if (n&1){
+            result *= a;
+        }
+        n >>=1 ;
+        a *= a;
+    }
+    
+    return result;
 }
 
 std::vector<int> solution1(std::vector<int> &a) {
@@ -261,14 +275,14 @@ int main() {
 /* 
 std::cout:
 ```
-iterations: 13, operations count: 31196
-s1 time: 23577
-iterations: 17, operations count: 102447
-s2 time: 46898
+iterations: 11, operations count: 31118
+s1 time: 22319
+iterations: 15, operations count: 92521
+s2 time: 44541
 iterations: 7, operations count: 699993
-s3 time: 11973
-s1: 4931
-s2: 4931
-s3: 4931
+s3 time: 11216
+s1: 4946
+s2: 4946
+s3: 4946
 ```
 */
