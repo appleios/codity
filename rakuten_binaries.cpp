@@ -13,6 +13,8 @@
  * binarie(a) = 2^0 + 2^0 + 2^1 + 2^2 + 2^0 + 2^3 + 2^0 + 2^1 = 1 + 1 + 2 + 4 + 1 + 8 + 1 + 2 = 20
  * b = [4,2], because binarie(b) = 2^4 + 2^2 = 16 + 4 = 20
  * and there is no shorter answer (following out of binary representation of number 20 = 1100).
+ *
+ * NOTE: the solution here is just refinied version of `rakuten_binaries_unrefined_version.cpp`.
  */
  
 #include <map>
