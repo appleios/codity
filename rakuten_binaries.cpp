@@ -14,17 +14,85 @@
  * b = [4,2], because binarie(b) = 2^4 + 2^2 = 16 + 4 = 20
  * and there is no shorter answer (following out of binary representation of number 20 = 1100).
  *
- * NOTE: the solution here is just refinied version of `rakuten_binaries_unrefined_version.cpp`.
+ * NOTE: there is 3 solutions: 3 - simpliest, 2 - optimized using a Map, 1 - optimized (and don't uses) Map, but has big (static) memory requirements.
  */
  
-#include <map>
 #include <vector>
 #include <iostream>
+#include <map>
 
-int solution(std::vector<int> &a) {
+#include <stdlib.h>
+
+#define MAXAI 100000*3/2
+
+long int bin(std::vector<int> &a) {
+    return 0;
+    
+//    long int s = 0;
+//    for (int i=0; i<a.size(); i++) { // (don't look here, I'm lazy...)
+//        long int t = 1, k = a[i];
+//        for(int j=0; j<k; j++) t*= 2;
+//        s += t;
+//    }
+//    return s;
+}
+
+long int pow2(long int n) {
+    int r = 1;
+    for (int i=0; i<n; i++) {
+        r *= 2;
+    }
+    return r;
+}
+
+std::vector<int> solution1(std::vector<int> &a) {
+    int uniq[MAXAI] = {0};
+    for(int i=0; i<a.size(); i++) {
+        uniq[a[i]]++;
+    }
+    int it_count = 0, op_count = 0;
+    bool has_changed;
+    do {
+        has_changed = false;
+        for(int i=0; i<MAXAI; i++) {
+            op_count++;
+            if(uniq[i]>1) {
+                long int x,y,t,z;
+                x = uniq[i];
+                t = 0;
+                while(x >= 2) {
+                    x /= 2;
+                    t++;
+                }
+                x = pow2(t);
+                y = uniq[i] - x;
+                z = t + i;
+                uniq[i]= (int)y;
+                uniq[z]++;
+                has_changed=true;
+            }
+        }
+        it_count++;
+    } while(has_changed);
+    
+    int k = 0;
+    std::vector<int> b;
+    for(int i=0; i<MAXAI; i++){
+        if(uniq[i]>0) {
+            b.push_back(i);
+            k++;
+        }
+    }
+    
+    std::cout << "iterations: " << it_count << ", operations count: " << op_count << std::endl;
+
+    return b;
+}
+
+std::vector<int> solution2(std::vector<int> &a) {
     std::map<int, int> uniq;
     std::map<int, int>::iterator it;
-
+    
     for(int i=0; i<a.size(); i++) {
         int t = a[i];
         it = uniq.find(t);
@@ -35,16 +103,29 @@ int solution(std::vector<int> &a) {
         }
     }
     
+    int it_count = 0, op_count = 0;
     bool has_changed;
     do {
         has_changed = false;
         
         std::vector<int> must_delete, to_inc;
         for(it = uniq.begin(); it != uniq.end(); it++){
-            int key = it->first, value = it->second;
+            op_count++;
+            long int key = it->first, value = it->second;
             if(value > 1) {
-                it->second = value % 2;
-                to_inc.push_back(key + value / 2);
+                long int x,y,t,z;
+                x = value;
+                t = 0;
+                while(x >= 2) {
+                    x /= 2;
+                    t++;
+                }
+                x = pow2(t);
+                y = value - x;
+                z = key + t;
+
+                it->second = (int)y;
+                to_inc.push_back((int)z);
                 has_changed = true;
             }
         }
@@ -58,7 +139,7 @@ int solution(std::vector<int> &a) {
                 uniq[z] = 1;
             }
         }
-
+        
         for(it = uniq.begin(); it != uniq.end(); it++){
             if(it->second == 0) { // mark key for deletion
                 must_delete.push_back(it->first);
@@ -67,43 +148,84 @@ int solution(std::vector<int> &a) {
         for(int i=0; i<must_delete.size(); i++){
             uniq.erase(must_delete[i]);
         }
-
+        it_count++;
     } while(has_changed);
     
-    std::cout << "b: [ ";
+    std::vector<int> b;
     for(it = uniq.begin(); it != uniq.end(); it++){
-        std::cout << it->first << " ";
+        b.push_back(it->first);
     }
-    std::cout << "]" << std::endl;
+    std::cout << "iterations: " << it_count << ", operations count: " << op_count << std::endl;
 
-    return (int)uniq.size();
+    return b;
+}
+
+std::vector<int> solution3(std::vector<int> &a) {
+    bool has_changed = false;
+    for(int i=0; i<a.size(); i++) {
+        a[i]++;
+    }
+    int it_count = 0, op_count = 0;
+    do {
+        std::sort(a.begin(), a.end());
+        
+        has_changed = false;
+        
+        for(int i=0; i<a.size()-1; i++) {
+            op_count++;
+            if(a[i] > 0) {
+                if(a[i] == a[i+1]) {
+                    a[i] = 0;
+                    a[i+1]++;
+                    has_changed = true;
+                }
+            }
+        }
+        it_count++;
+    } while(has_changed);
+    
+
+    int k=0;
+    std::vector<int> b;
+    for(int i=0; i<a.size(); i++) {
+        if(a[i]>0) {
+            b.push_back(a[i]-1);
+            k++;
+        }
+    }
+
+    std::cout << "iterations: " << it_count << ", operations count: " << op_count << std::endl;
+
+    return b;
 }
 
 int main() {
-    std::vector<int> a(8);
-    
-    a[0]=8;
-    a[1]=8;
-    a[2]=4;
-    a[3]=4;
-    a[4]=2;
-    a[5]=2;
-    a[6]=1;
-    a[7]=1;
-    
-    // finding a binarie
-    long int s = 0;
-    for (int i=0; i<a.size(); i++) { // (don't look here, I'm lazy...)
-        long int t = 1, k = a[i];
-        for(int j=0; j<k; j++) t*= 2;
-        s += t;
+    int n = 100000;
+    std::vector<int> a(n);
+
+    srand((unsigned int)time(NULL));
+    for (int i=0; i<n; i++) {
+        a[i] = rand() % 10000;
     }
-    
-    std::cout << "bin(a) = " << s << std::endl;
-    
-    int r = solution(a);
-    
-    std::cout << "answer: " << r << std::endl;
+    long int bina = bin(a);
+    std::cout << "bin(a) = " << bina << std::endl;
+    std::vector<int> b1, b2, b3;
+    b1 = solution1(a);
+    b2 = solution2(a);
+    b3 = solution3(a);
+    std::cout << "s1: " << b1.size() << std::endl;
+    std::cout << "s2: " << b2.size() << std::endl;
+    std::cout << "s3: " << b3.size() << std::endl;
+
+    if (bin(b1) != bina) {
+        std::cout << "s1 incorrect" << std::endl;
+    }
+    if (bin(b2) != bina) {
+        std::cout << "s2 incorrect" << std::endl;
+    }
+    if (bin(b3) != bina) {
+        std::cout << "s3 incorrect" << std::endl;
+    }
     
     return 0;
 }
@@ -111,8 +233,11 @@ int main() {
 /* 
 std::cout:
 ```
-bin(a) = 556
-b: [ 2 3 5 9 ]
-answer: 4
+iterations: 4, operations count: 600000
+iterations: 17, operations count: 103317
+iterations: 7, operations count: 699993
+s1: 5014
+s2: 5014
+s3: 5014
 ```
 */
