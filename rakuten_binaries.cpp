@@ -47,14 +47,20 @@ long int pow2(long int n) {
 
 std::vector<int> solution1(std::vector<int> &a) {
     int uniq[MAXAI] = {0};
+    std::set<int> active_indexes;
     for(int i=0; i<a.size(); i++) {
         uniq[a[i]]++;
+        if (uniq[a[i]] == 1) {
+            active_indexes.insert(a[i]);
+        }
     }
     int it_count = 0, op_count = 0;
     bool has_changed;
     do {
         has_changed = false;
-        for(int i=0; i<MAXAI; i++) {
+        std::set<int> active_indexes2;
+        for(std::set<int>::iterator it=active_indexes.begin(); it!=active_indexes.end(); it++) {
+            int i = *it;
             op_count++;
             if(uniq[i]>1) {
                 long int x,y,t,z;
@@ -70,9 +76,17 @@ std::vector<int> solution1(std::vector<int> &a) {
                 uniq[i]= (int)y;
                 uniq[z]++;
                 has_changed=true;
+                
+                if (uniq[i]>0) {
+                    active_indexes2.insert(i);
+                }
+                if (uniq[z]>0) {
+                    active_indexes2.insert((int)z);
+                }
             }
         }
         it_count++;
+        active_indexes = active_indexes2;
     } while(has_changed);
     
     int k = 0;
