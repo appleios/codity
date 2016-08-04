@@ -68,7 +68,7 @@ int solution(std::vector<int> &a) {
 
     } while(has_changed);
     
-    std::cout << "answer: [ ";
+    std::cout << "b: [ ";
     for(it = uniq.begin(); it != uniq.end(); it++){
         std::cout << it->first << " ";
     }
@@ -101,7 +101,7 @@ int main() {
     
     int r = solution(a);
     
-    std::cout << r << std::endl;
+    std::cout << "answer: " << r << std::endl;
     
     return 0;
 }
