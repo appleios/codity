@@ -15,19 +15,10 @@
  * and there is no sorter answer (following out of shortes binary representation of number 20 = 1100).
  */
  
-// warning: contains debug output 
-
 #include <map>
 #include <vector>
 #include <algorithm>
 #include <iostream>
-
-void print_map(std::map<int, int> &uniq){
-    std::map<int, int>::iterator it;
-    for(it = uniq.begin(); it != uniq.end(); it++){
-        std::cout << "key: " << it->first << " value: " << it->second << std::endl;
-    }
-}
 
 int solution(std::vector<int> &a) {
     std::map<int, int> uniq;
@@ -44,9 +35,6 @@ int solution(std::vector<int> &a) {
     bool has_changed = false;
     do {
         
-        std::cout << "---" << std::endl;
-        print_map(uniq);
-
         has_changed = false;
         
         std::map<int, int>::iterator it;
@@ -81,9 +69,6 @@ int solution(std::vector<int> &a) {
         
     } while(has_changed);
     
-    std::cout << "final:" << std::endl;
-    print_map(uniq);
-    
     return uniq.size();
 }
 
@@ -97,17 +82,9 @@ int main() {
     a[4]=2;
     a[5]=4;
     a[6]=0;
-    a[7]=2;
-    
-    long int s = 0;
-    for (int i=0; i<a.size(); i++) {
-        long int t = 1, k = a[i];
-        for(int j=0; j<k; j++) t*= 2;
-        s += t;
-    }
-    
-    std::cout << "bin(a) = " << s << std::endl;
-    
+    a[7]=1;
+    // binarie (a) = 30
     int r = solution(a);
+    // answer is 4, b = [1,2,3,4], cuz 30 = 11110b
     return 0;
 }
